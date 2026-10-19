@@ -3,31 +3,123 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>الحابون | Alhaboon</title>
+<title>هابون | Haboon</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif}
-body{background:#0f172a;color:white;text-align:center;padding:20px}
-header{padding:60px 20px}
-h1{font-size:48px;margin-bottom:10px;color:#facc15}
-p{color:#cbd5e1;font-size:18px;line-height:1.8}
-.btn{display:inline-block;margin-top:25px;background:#facc15;color:#0f172a;padding:14px 30px;border-radius:50px;text-decoration:none;font-weight:bold;font-size:18px}
-.cards{display:flex;gap:15px;justify-content:center;flex-wrap:wrap;margin-top:40px}
-.card{background:#1e293b;padding:25px;border-radius:20px;width:280px}
-.card h3{margin-bottom:10px;color:#facc15}
-footer{margin-top:60px;color:#94a3b8;font-size:14px}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Tahoma,Arial}
+body{background:#d9dbd5;display:flex;justify-content:center;align-items:center;height:100vh}
+.login{width:100%;max-width:400px;background:#fff;padding:30px;border-radius:15px;text-align:center;box-shadow:0 0 20px rgba(0,0,0,.2)}
+.login h1{color:#075e54;font-size:32px;margin-bottom:5px}.login h1 span{color:#25d366}
+.login p{color:#666;margin-bottom:20px}
+.login input{width:100%;padding:13px;margin:8px 0;border:1px solid #ddd;border-radius:10px;outline:none;font-size:16px;text-align:center}
+.login button{width:100%;padding:13px;background:#25d366;color:#fff;border:none;border-radius:10px;font-size:17px;font-weight:bold;cursor:pointer;margin-top:10px}
+.login button:hover{background:#1da851}
+.error{color:red;font-size:13px;display:none;margin-top:8px}
+.app{width:100%;max-width:1200px;height:100vh;max-height:720px;background:#fff;display:none;overflow:hidden;box-shadow:0 0 20px rgba(0,0,0,.2)}
+.sidebar{width:35%;background:#fff;border-left:1px solid #ddd;display:flex;flex-direction:column}
+.top{background:#ededed;padding:12px;display:flex;justify-content:space-between;align-items:center}
+.logo{font-weight:bold;font-size:20px;color:#075e54}.logo span{color:#25d366}
+.search{padding:8px;background:#f6f6f6}.search input{width:100%;padding:10px;border:none;border-radius:20px;background:#fff;outline:none;text-align:center}
+.chats{flex:1;overflow-y:auto}.chat-item{display:flex;gap:10px;padding:12px;cursor:pointer;border-bottom:1px solid #f0f0f0}
+.chat-item:hover,.chat-item.active{background:#ebebeb}
+.avatar{width:45px;height:45px;border-radius:50%;background:#25d366;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:18px;flex-shrink:0}
+.chat-info{flex:1}.chat-info b{display:flex;justify-content:space-between}.chat-info small{color:#888}
+.main{flex:1;display:flex;flex-direction:column;background:#efeae2}
+.chat-header{background:#ededed;padding:12px;display:flex;align-items:center;gap:10px}
+.messages{flex:1;padding:20px;overflow-y:auto;display:flex;flex-direction:column;gap:8px}
+.msg{max-width:70%;padding:8px 12px;border-radius:10px;font-size:15px;line-height:1.5}
+.me{background:#dcf8c6;align-self:flex-start}.other{background:#fff;align-self:flex-end}
+.input-area{background:#f0f0f0;padding:10px;display:flex;gap:10px}
+.input-area input{flex:1;padding:12px;border:none;border-radius:25px;outline:none;font-size:15px}
+.input-area button{background:#25d366;color:#fff;border:none;width:45px;height:45px;border-radius:50%;font-size:20px;cursor:pointer}
+.logout{border:none;background:#ff4444;color:#fff;padding:6px 12px;border-radius:15px;cursor:pointer}
+@media(max-width:700px){.sidebar{width:100%}.main{display:none}.main.open{display:flex;position:fixed;inset:0}.back{display:block!important}}
+.back{display:none;background:none;border:none;font-size:22px;cursor:pointer}
 </style>
 </head>
 <body>
-<header>
-<h1>الحابون</h1>
-<p>أهلاً بك في موقع الحابون الرسمي<br>جودة، ثقة، وتميّز</p>
-<a class="btn" href="https://wa.me/967000000000">تواصل معنا واتساب</a>
-</header>
-<div class="cards">
-<div class="card"><h3>✨ خدماتنا</h3><p>نقدم لك أفضل الخدمات بجودة عالية وأسعار مناسبة.</p></div>
-<div class="card"><h3>🚀 لماذا نحن؟</h3><p>سرعة في التنفيذ، اهتمام بالتفاصيل، ورضا العملاء أولاً.</p></div>
-<div class="card"><h3>📞 تواصل</h3><p>نحن جاهزون لخدمتك في أي وقت، تواصل معنا الآن.</p></div>
+
+<div class="login" id="loginBox">
+  <h1>هابون <span>Haboon</span></h1>
+  <p>مرحباً بك في هابون<br>سجل دخولك برقم الجوال</p>
+  <input id="userName" placeholder="اسمك - مثال: محمد">
+  <input id="userPhone" placeholder="رقم الجوال - مثال: 777123456" type="tel" dir="ltr">
+  <input id="userPass" placeholder="كلمة السر (4 أرقام على الأقل)" type="password">
+  <button onclick="login()">دخول إلى هابون ➤</button>
+  <div class="error" id="errorMsg">من فضلك املأ كل البيانات بشكل صحيح</div>
+  <p style="font-size:12px;margin-top:15px;color:#999">بالدخول أنت توافق على شروط هابون</p>
 </div>
-<footer>© 2026 الحابون - جميع الحقوق محفوظة</footer>
+
+<div class="app" id="appBox">
+  <div class="sidebar">
+    <div class="top"><div class="logo">هابون <span>Haboon</span></div><button class="logout" onclick="logout()">خروج</button></div>
+    <div style="padding:10px;background:#e8f5e9;text-align:center"><b id="myName">👤</b><br><small id="myPhone"></small></div>
+    <div class="search"><input placeholder="🔍 بحث في هابون"></div>
+    <div class="chats" id="chatList"></div>
+  </div>
+  <div class="main" id="mainChat">
+    <div class="chat-header"><button class="back" onclick="closeChat()">←</button><div class="avatar" id="headAvatar">أ</div><div><b id="headName">اختر محادثة</b><br><small style="color:green">متصل الآن</small></div></div>
+    <div class="messages" id="messages"></div>
+    <div class="input-area"><input id="msgInput" placeholder="اكتب رسالة هنا..."><button onclick="sendMsg()">➤</button></div>
+  </div>
+</div>
+
+<script>
+let saved = localStorage.getItem('haboon_user');
+if(saved){ let u=JSON.parse(saved); showApp(u.name, u.phone); }
+function login(){
+  let name=document.getElementById('userName').value.trim();
+  let phone=document.getElementById('userPhone').value.trim();
+  let pass=document.getElementById('userPass').value.trim();
+  if(name.length<2 || phone.length<9 || pass.length<4){
+    document.getElementById('errorMsg').style.display='block';
+    return;
+  }
+  let user={name:name, phone:phone};
+  localStorage.setItem('haboon_user', JSON.stringify(user));
+  showApp(name, phone);
+}
+function showApp(name, phone){
+  document.getElementById('loginBox').style.display='none';
+  document.getElementById('appBox').style.display='flex';
+  document.getElementById('myName').innerText='👤 ' + name;
+  document.getElementById('myPhone').innerText=phone;
+}
+function logout(){
+  localStorage.removeItem('haboon_user');
+  location.reload();
+}
+let chats=[
+{name:"أحمد الحبوني",last:"أهلا، كيفك؟",letter:"أ"},
+{name:"محمد",last:"تمام، متى نلتقي؟",letter:"م"},
+{name:"سارة",last:"أرسلت لك الصور",letter:"س"},
+{name:"مجموعة العائلة",last:"علي: السلام عليكم",letter:"ع"},
+{name:"هابون الرسمي",last:"مرحبا بك في هابون ✅",letter:"ه"},
+];
+let list=document.getElementById('chatList');
+chats.forEach((c,i)=>{
+  let d=document.createElement('div');
+  d.className='chat-item'+(i==0?' active':'');
+  d.innerHTML=`<div class="avatar">${c.letter}</div><div class="chat-info"><b><span>${c.name}</span><small>10:30</small></b><small>${c.last}</small></div>`;
+  d.onclick=()=>openChat(i,d);
+  list.appendChild(d);
+});
+function openChat(i,el){
+  document.querySelectorAll('.chat-item').forEach(e=>e.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('headName').innerText=chats[i].name;
+  document.getElementById('headAvatar').innerText=chats[i].letter;
+  document.getElementById('messages').innerHTML=`<div class="msg other">أهلا، هذه محادثة ${chats[i].name} في هابون</div>`;
+  document.getElementById('mainChat').classList.add('open');
+}
+function closeChat(){document.getElementById('mainChat').classList.remove('open')}
+function sendMsg(){
+  let inp=document.getElementById('msgInput');
+  if(!inp.value.trim())return;
+  let m=document.createElement('div'); m.className='msg me'; m.innerText=inp.value;
+  document.getElementById('messages').appendChild(m); inp.value='';
+  setTimeout(()=>{ let r=document.createElement('div'); r.className='msg other'; r.innerText='تم استلام رسالتك في هابون ✅'; document.getElementById('messages').appendChild(r); },800);
+}
+document.getElementById('msgInput').addEventListener('keydown',e=>{if(e.key==='Enter')sendMsg()});
+</script>
 </body>
-</html>
+  </html>
