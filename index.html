@@ -1,5 +1,75 @@
-<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Haboon Business</title><style>*{margin:0;padding:0;box-sizing:border-box;font-family:Tahoma}body{background:#f0f2f5}.top{background:#075e54;color:#fff;padding:12px 15px;display:flex;justify-content:space-between;position:sticky;top:0}.container{max-width:1100px;margin:auto;padding:15px;display:flex;gap:15px}.side{width:250px;background:#fff;border-radius:12px;padding:15px;height:fit-content}.side div{padding:12px;border-radius:8px;cursor:pointer;font-weight:bold}.side div.active{background:#e8f5e9;color:#075e54}.main{flex:1}.card{background:#fff;border-radius:12px;padding:15px;margin-bottom:15px}.btn{background:#25d366;color:#fff;border:none;padding:10px 18px;border-radius:20px;font-weight:bold}.btn2{background:#075e54;color:#fff;border:none;padding:10px 18px;border-radius:20px;font-weight:bold;width:100%;margin-top:10px}input,textarea{width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;margin:8px 0}.store-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}.store{border:1px solid #eee;border-radius:12px;padding:10px;text-align:center;background:#fff}.login{max-width:380px;margin:60px auto;background:#fff;padding:25px;border-radius:18px;text-align:center}</style></head><body>
-<div class="login" id="loginBox"><h2 style="color:#075e54">هابون Haboon</h2><input id="email" placeholder="example@gmail.com"><input id="name" placeholder="اسمك"><input id="pass" type="password" placeholder="كلمة السر"><button class="btn" style="width:100%;margin-top:10px" onclick="login()">دخول</button></div>
-<div id="appBox" style="display:none"><div class="top"><b>هابون Haboon</b><span id="userNameTop"></span></div><div class="container"><div class="side"><div class="active" id="m1" onclick="show('feed')">🏠 الرئيسية</div><div id="m2" onclick="show('stores')">🛍️ السوق</div><div id="m3" onclick="show('myStore')">🏪 متجري</div><div id="m4" onclick="show('business')">💼 الأعمال</div><div id="m5" onclick="show('wallet')">💰 ارباحي</div></div><div class="main"><div id="feed"><div class="card"><textarea id="postText" placeholder="بماذا تفكر؟"></textarea><button class="btn" onclick="addPost()">نشر</button></div><div id="posts"></div></div><div id="stores" style="display:none"><div class="store-grid" id="storeGrid"></div></div><div id="myStore" style="display:none"><div class="card"><h3>🏪 متجري</h3><input id="storeName" placeholder="اسم متجرك"><input id="productName" placeholder="اسم المنتج"><input id="productPrice" type="number" placeholder="السعر"><button class="btn2" onclick="addProduct()">اضافة +</button></div><div class="store-grid" id="myProducts"></div></div><div id="business" style="display:none"><div class="card" style="background:#075e54;color:#fff"><h2>💼 هابون للأعمال</h2><div style="background:#fff;color:#333;border-radius:12px;padding:15px;margin-top:15px">الباقة 1000 ريال/شهر<br>✅ رد آلي<br>✅ ارسال عروض<br>✅ توثيق<br><button class="btn2" onclick="subscribe()">اشترك الآن</button></div><p id="subStatus"></p></div></div><div id="wallet" style="display:none"><div class="card" style="text-align:center"><h3>💰 ارباحك</h3><div style="font-size:32px;font-weight:bold;color:#075e54;margin:15px 0" id="myBalance">0 ريال</div><div style="display:flex;gap:10px"><div style="flex:1;background:#e8f5e9;padding:10px;border-radius:10px"><b id="storesCount">0</b><br><small>متجر</small></div><div style="flex:1;background:#e8f5e9;padding:10px;border-radius:10px"><b id="salesCount">0</b><br><small>بيع</small></div></div></div></div></div></div></div>
-<script>let cur=JSON.parse(localStorage.getI
-                           tem('haboon_current')||'null');if(cur)showApp();function login(){let e=document.getElementById('email').value;let n=document.getElementById('name').value||e.split('@')[0];if(!e.includes('@')){alert('بريد خطأ');return;}cur={email:e,name:n};localStorage.setItem('haboon_current',JSON.stringify(cur));showApp();}function showApp(){document.getElementById('loginBox').style.display='none';document.getElementById('appBox').style.display='block';document.getElementById('userNameTop').innerText=cur.name;loadData();}function show(id){document.getElementById('feed').style.display=id=='feed'?'block':'none';document.getElementById('stores').style.display=id=='stores'?'block':'none';document.getElementById('myStore').style.display=id=='myStore'?'block':'none';document.getElementById('business').style.display=id=='business'?'block':'none';document.getElementById('wallet').style.display=id=='wallet'?'block':'none';document.querySelectorAll('.side div').forEach(d=>d.classList.remove('active'));document.getElementById('m'+(id=='feed'?1:id=='stores'?2:id=='myStore'?3:id=='business'?4:5)).classList.add('active');if(id=='stores')renderMarket();if(id=='myStore')renderMy();if(id=='wallet')renderWallet();}let posts=JSON.parse(localStorage.getItem('haboon_posts')||'[]');let products=JSON.parse(localStorage.getItem('haboon_products')||'[{"name":"عسل يمني","price":15000,"store":"متجر العسل","img":"https://images.unsplash.com/photo-1587049352851-8d4e89133924?w=300"}]');function loadData(){renderPosts();renderMarket();renderMy();renderWallet();}function addPost(){let t=document.getElementById('postText').value.trim();if(!t)return;posts.unshift({name:cur.name,text:t,time:'الان'});localStorage.setItem('haboon_posts',JSON.stringify(posts));document.getElementById('postText').value='';renderPosts();}function renderPosts(){let all=[{name:'هابون الرسمي',text:'مرحبا بكم في هابون للأعمال 🇾🇪',time:'قبل ساعة'},...posts];document.getElementById('posts').innerHTML=all.map(p=>`<div class="card"><b>${p.name}</b> <small>${p.time}</small><p>${p.text}</p></div>`).join('');}function addProduct(){let s=document.getElementById('storeName').value;let pr=document.getElementById('productName').value;let price=document.getElementById('productPrice').value;if(!pr||!price)return;products.push({name:pr,price:parseInt(price),store:s||cur.name,img:'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300'});localStorage.setItem('haboon_products',JSON.stringify(products));alert('تمت الاضافة');renderMarket();renderMy();}function renderMarket(){document.getElementById('storeGrid').innerHTML=products.map((p,i)=>`<div class="store" onclick="buy(${i})"><img src="${p.img}" style="width:100%;height:100px;object-fit:cover;border-radius:8px"><b>${p.name}</b><div style="color:#075e54;font-weight:bold">${p.price} ريال</div><button class="btn" style="width:100%;margin-top:5px">شراء</button></div>`).join('');}function renderMy(){let my=products.filter(p=>p.store==cur.name);document.getElementById('myProducts').innerHTML=my.map(p=>`<div class="store"><b>${p.name}</b><div>${p.price} ريال</div></div>`).join('');}function buy(i){let p=products[i];let c=Math.round(p.price*0.02);if(confirm(`شراء ${p.name}؟ +${c} ريال عمولة`)){updateBalance(c);alert('تم +'+c+' ريال');}}let bal=parseInt(localStorage.getItem('haboon_owner_balance')||'0');let sales=parseInt(localStorage.getItem('haboon_sales')||'0');function updateBalance(a){bal+=a;sales+=a>0?1:0;localStorage.setItem('haboon_owner_balance',bal);localStorage.setItem('haboon_sales',sales);renderWallet();}function renderWallet(){document.getElementById('myBalance').innerText=bal+' ريال';document.getElementById('storesCount').innerText=Math.floor(bal/1000)+2;document.getElementById('salesCount').innerText=sales;}function subscribe(){if(confirm('اشتراك 1000 ريال؟')){bal+=1000;localStorage.setItem('haboon_owner_balance',bal);document.getElementById('subStatus').innerText='✅ تم +1000 ريال';renderWallet();}}</script></body></html>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>هابون | Haboon Business</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma}
+body{background:#f0f2f5}
+.top{background:#075e54;color:#fff;padding:12px 15px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0}
+.container{max-width:1100px;margin:auto;padding:15px;display:flex;gap:15px}
+.side{width:250px;background:#fff;border-radius:12px;padding:15px;height:fit-content}
+.side div{padding:12px;border-radius:8px;cursor:pointer;font-weight:bold}
+.side div.active{background:#e8f5e9;color:#075e54}
+.main{flex:1}
+.card{background:#fff;border-radius:12px;padding:15px;margin-bottom:15px}
+.btn{background:#25d366;color:#fff;border:none;padding:10px 18px;border-radius:20px;font-weight:bold}
+.btn2{background:#075e54;color:#fff;border:none;padding:10px 18px;border-radius:20px;font-weight:bold;width:100%;margin-top:10px}
+input,textarea{width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;margin:8px 0}
+.store-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+.store{border:1px solid #eee;border-radius:12px;padding:10px;text-align:center;background:#fff}
+.store img{width:100%;height:100px;object-fit:cover;border-radius:8px}
+.price{color:#075e54;font-weight:bold}
+.login{max-width:380px;margin:60px auto;background:#fff;padding:25px;border-radius:18px;text-align:center}
+</style>
+</head>
+<body>
+<div class="login" id="loginBox">
+<h2 style="color:#075e54">هابون Haboon</h2>
+<p>منصة التواصل والتجارة اليمنية</p>
+<input id="email" placeholder="example@gmail.com">
+<input id="name" placeholder="اسمك">
+<input id="pass" type="password" placeholder="كلمة السر">
+<button class="btn" style="width:100%;margin-top:10px" onclick="login()">دخول</button>
+</div>
+<div id="appBox" style="display:none">
+<div class="top"><b>هابون Haboon</b><span id="userNameTop"></span></div>
+<div class="container">
+<div class="side">
+<div class="active" id="m1" onclick="show('feed')">🏠 الرئيسية</div>
+<div id="m2" onclick="show('stores')">🛍️ سوق هابون</div>
+<div id="m3" onclick="show('myStore')">🏪 متجري</div>
+<div id="m4" onclick="show('business')">💼 هابون للأعمال</div>
+<div id="m5" onclick="show('wallet')">💰 أرباحي</div>
+</div>
+<div class="main">
+<div id="feed"><div class="card"><textarea id="postText" placeholder="بماذا تفكر؟"></textarea><button class="btn" onclick="addPost()">نشر</button></div><div id="posts"></div></div>
+<div id="stores" style="display:none"><div class="store-grid" id="storeGrid"></div></div>
+<div id="myStore" style="display:none"><div class="card"><h3>🏪 متجري</h3><input id="storeName" placeholder="اسم متجرك"><input id="productName" placeholder="اسم المنتج"><input id="productPrice" type="number" placeholder="السعر"><button class="btn2" onclick="addProduct()">اضافة +</button></div><div class="store-grid" id="myProducts"></div></div>
+<div id="business" style="display:none"><div class="card" style="background:#075e54;color:#fff"><h2>💼 هابون للأعمال</h2><div style="background:#fff;color:#333;border-radius:12px;padding:15px;margin-top:10px">الباقة 1000 ريال/شهر<br>✅ رد آلي<br>✅ عروض لـ 1000 شخص<br>✅ توثيق<br><button class="btn2" onclick="subscribe()">اشترك الآن</button></div><p id="subStatus"></p></div></div>
+<div id="wallet" style="display:none"><div class="card" style="text-align:center"><h3>💰 ارباحك</h3><div style="font-size:32px;color:#075e54;margin:15px 0" id="myBalance">0 ريال</div><div style="display:flex;gap:10px"><div style="flex:1;background:#e8f5e9;padding:10px;border-radius:10px"><b id="storesCount">0</b><br><small>متجر</small></div><div style="flex:1;background:#e8f5e9;padding:10px;border-radius:10px"><b id="salesCount">0</b><br><small>بيع</small></div></div></div></div>
+</div>
+</div>
+</div>
+<script>
+let cur=JSON.parse(localStorage.getItem('haboon_current')||'null');if(cur)showApp();
+function login(){let e=document.getElementById('email').value;let n=document.getElementById('name').value||e.split('@')[0];if(!e.includes('@')){alert('بريد خطأ');return;}cur={email:e,name:n};localStorage.setItem('haboon_current',JSON.stringify(cur));showApp();}
+function showApp(){document.getElementById('loginBox').style.display='none';document.getElementById('appBox').style.display='block';document.getElementById('userNameTop').innerText=cur.name;loadData();}
+function show(id){document.getElementById('feed').style.display=id=='feed'?'block':'none';document.getElementById('stores').style.display=id=='stores'?'block':'none';document.getElementById('myStore').style.display=id=='myStore'?'block':'none';document.getElementById('business').style.display=id=='business'?'block':'none';document.getElementById('wallet').style.display=id=='wallet'?'block':'none';document.querySelectorAll('.side div').forEach(d=>d.classList.remove('active'));document.getElementById('m'+(id=='feed'?1:id=='stores'?2:id=='myStore'?3:id=='business'?4:5)).classList.add('active');if(id=='stores')renderMarket();if(id=='myStore')renderMy();if(id=='wallet')renderWallet();}
+let posts=JSON.parse(localStorage.getItem('haboon_posts')||'[]');
+let products=JSON.parse(localStorage.getItem('haboon_products')||'[{"name":"عسل يمني","price":15000,"store":"متجر العسل","img":"https://images.unsplash.com/photo-1587049352851-8d4e89133924?w=300"}]');
+function loadData(){renderPosts();renderMarket();renderMy();renderWallet();}
+function addPost(){let t=document.getElementById('postText').value.trim();if(!t)return;posts.unshift({name:cur.name,text:t,time:'الان'});localStorage.setItem('haboon_posts',JSON.stringify(posts));document.getElementById('postText').value='';renderPosts();}
+function renderPosts(){let all=[{name:'هابون الرسمي',text:'مرحبا بكم في هابون 🇾🇪',time:'قبل ساعة'},...posts];document.getElementById('posts').innerHTML=all.map(p=>`<div class="card"><b>${p.name}</b> <small>${p.time}</small><p>${p.text}</p></div>`).join('');}
+function addProduct(){let s=document.getElementById('storeName').value;let pr=document.getElementById('productName').value;let price=document.getElementById('productPrice').value;if(!pr||!price)return;products.push({name:pr,price:parseInt(price),store:s||cur.name,img:'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300'});localStorage.setItem('haboon_products',JSON.stringify(products));alert('تمت الاضافة');renderMarket();renderMy();}
+function renderMarket(){document.getElementById('storeGrid').innerHTML=products.map((p,i)=>`<div class="store" onclick="buy(${i})"><img src="${p.img}"><b>${p.name}</b><div class="price">${p.price} ريال</div><button class="btn" style="width:100%;margin-top:5px">شراء</button></div>`).join('');}
+function renderMy(){let my=products.filter(p=>p.store==cur.name);document.getElementById('myProducts').innerHTML=my.map(p=>`<div class="store"><b>${p.name}</b><div>${p.price} ريال</div></div>`).join('');}
+function buy(i){let p=products[i];let c=Math.round(p.price*0.02);if(confirm(`شراء ${p.name}؟ +${c} ريال عمولة`)){updateBalance(c);alert('تم +'+c+' ريال');}}
+let bal=parseInt(localStorage.getItem('haboon_owner_balance')||'0');let sales=parseInt(localStorage.getItem('haboon_sales')||'0');
+function updateBalance(a){bal+=a;sales+=a>0?1:0;localStorage.setItem('haboon_owner_balance',bal);localStorage.setItem('haboon_sales',sales);renderWallet();}
+function renderWallet(){document.getElementById('myBalance').innerText=bal+' ريال';document.getElementById('storesCount').innerText=Math.floor(bal/1000)+2;document.getElementById('salesCount').innerText=sales;}
+function subscribe(){if(confirm('اشتراك 1000 ريال؟')){bal+=1000;localStorage.setItem('haboon_owner_balance',bal);document.getElementById('subStatus').innerText='✅ تم +1000 ريال';renderWallet();}}
+</script>
+</body>
+</html>
