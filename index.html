@@ -3,137 +3,91 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>هابون | Haboon</title>
+<title>الهابون - Alhaboon</title>
 <link rel="icon" href="icon.png">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma}
-body{background:#d9dbd5;display:flex;justify-content:center;align-items:center;height:100vh}
-/* تسجيل الدخول */
-.login{width:100%;max-width:400px;background:#fff;padding:30px;border-radius:15px;text-align:center;box-shadow:0 0 20px rgba(0,0,0,.2)}
-.login h1{color:#075e54;font-size:34px}.login h1 span{color:#25d366}
-.login p{color:#666;margin:10px 0 20px}
-.login input{width:100%;padding:13px;margin:8px 0;border:1px solid #ddd;border-radius:10px;outline:none;font-size:16px;text-align:center}
-.login button{width:100%;padding:13px;background:#25d366;color:#fff;border:none;border-radius:10px;font-size:17px;font-weight:bold;cursor:pointer}
-.error{color:red;font-size:13px;display:none;margin-top:8px}
-/* التطبيق */
-.app{width:100%;max-width:1200px;height:100vh;max-height:720px;background:#fff;display:none;overflow:hidden;box-shadow:0 0 20px rgba(0,0,0,.2)}
-.sidebar{width:38%;background:#fff;border-left:1px solid #ddd;display:flex;flex-direction:column}
-.header{background:#075e54;color:#fff;padding:12px 15px;display:flex;justify-content:space-between;align-items:center}
-.header b{font-size:20px}.header b span{color:#25d366}
-.header .icons{font-size:20px;display:flex;gap:15px;cursor:pointer}
-.tabs{background:#075e54;color:#fff;display:flex;text-align:center}
-.tabs div{flex:1;padding:12px;cursor:pointer;font-weight:bold;opacity:.7}
-.tabs div.active{opacity:1;border-bottom:3px solid #25d366}
-.search{padding:8px;background:#f6f6f6}.search input{width:100%;padding:10px;border:none;border-radius:20px;outline:none;text-align:center}
-.list{flex:1;overflow-y:auto}
-.item{display:flex;gap:12px;padding:12px;cursor:pointer;border-bottom:1px solid #f0f0f0;align-items:center}
-.item:hover,.item.active{background:#ebebeb}
-.avatar{width:48px;height:48px;border-radius:50%;background:#25d366;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:19px;flex-shrink:0;position:relative}
-.avatar.status{border:3px solid #25d366;background:#fff;color:#075e54}
-.avatar.call{background:#128c7e}
-.info{flex:1}.info b{display:flex;justify-content:space-between;font-size:15px}.info small{color:#888}
-.unread{background:#25d366;color:#fff;font-size:12px;padding:2px 7px;border-radius:50%;float:left}
-/* المحادثة */
-.main{flex:1;display:flex;flex-direction:column;background:#efeae2}
-.chat-head{background:#ededed;padding:10px;display:flex;align-items:center;gap:10px}
-.messages{flex:1;padding:20px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;background-image:url('https://i.imgur.com/8s9m4xK.png')}
-.msg{max-width:70%;padding:8px 12px;border-radius:10px;font-size:15px;line-height:1.5;box-shadow:0 1px 1px rgba(0,0,0,.1)}
-.me{background:#dcf8c6;align-self:flex-start}.other{background:#fff;align-self:flex-end}
-.msg small{font-size:10px;color:#888;display:block;text-align:left;margin-top:3px}
-.input-area{background:#f0f0f0;padding:8px;display:flex;gap:8px;align-items:center}
-.input-area input{flex:1;padding:12px;border:none;border-radius:25px;outline:none;font-size:15px}
-.input-area button{background:#25d366;color:#fff;border:none;width:45px;height:45px;border-radius:50%;font-size:20px;cursor:pointer}
-.back{display:none;background:none;border:none;font-size:22px;cursor:pointer}
-@media(max-width:700px){.sidebar{width:100%}.main{display:none}.main.open{display:flex;position:fixed;inset:0}.back{display:block}}
+body{background:#f5fffe;display:flex;justify-content:center;align-items:center;min-height:100vh}
+.box{width:100%;max-width:380px;background:#fff;padding:25px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,.08);text-align:center}
+.icon{width:90px;height:90px;background:linear-gradient(#0ecb81,#075e54);border-radius:22px;margin:0 auto 15px;display:flex;align-items:center;justify-content:center;font-size:50px;color:#fff}
+h1{color:#075e54;font-size:32px;margin:0}
+h1 span{font-size:16px;display:block;color:#888;font-weight:normal;margin-top:5px}
+.input{position:relative;margin:12px 0}
+.input input{width:100%;padding:14px 45px 14px 15px;border:1.5px solid #e8ecec;border-radius:12px;outline:none;font-size:16px;background:#f9fafb}
+.input input:focus{border-color:#0ecb81;background:#fff}
+.input i{position:absolute;right:14px;top:14px;font-size:20px}
+.btn{width:100%;padding:14px;background:linear-gradient(to left,#075e54,#0a8a73);color:#fff;border:none;border-radius:12px;font-size:17px;font-weight:bold;cursor:pointer;margin-top:10px}
+.btn:active{transform:scale(.98)}
+.link{margin-top:15px;font-size:14px;color:#666}
+.link b{color:#075e54;cursor:pointer}
+.error{display:none;background:#ffeaea;color:#d33;padding:10px;border-radius:10px;margin-top:10px;font-size:14px}
+.app{display:none;width:100%;max-width:1000px;height:100vh;background:#f0f2f5}
 </style>
 </head>
 <body>
 
-<div class="login" id="loginBox">
-<h1>هابون <span>Haboon</span></h1>
-<p>مرحباً بك في هابون<br>سجل دخولك برقم الجوال</p>
-<input id="userName" placeholder="اسمك - مثال: محمد">
-<input id="userPhone" placeholder="رقم الجوال - مثال: 777123456" type="tel" dir="ltr">
-<input id="userPass" placeholder="كلمة السر" type="password">
-<button onclick="login()">دخول إلى هابون ➤</button>
-<div class="error" id="errorMsg">من فضلك املأ كل البيانات بشكل صحيح</div>
+<div class="box" id="loginBox">
+<div class="icon">💬</div>
+<h1>الهابون <span>منصة التواصل الاجتماعي الخاصة بك</span></h1>
+
+<div style="text-align:right;margin-top:25px">
+<label style="font-size:14px;font-weight:bold;color:#333">البريد الإلكتروني</label>
+<div class="input"><i>📧</i><input id="email" type="email" placeholder="example@gmail.com" dir="ltr"></div>
+
+<label style="font-size:14px;font-weight:bold;color:#333">كلمة المرور</label>
+<div class="input"><i>🔒</i><input id="pass" type="password" placeholder="••••••••" dir="ltr"></div>
+
+<label style="font-size:14px;font-weight:bold;color:#333">اسمك (للمرة الأولى فقط)</label>
+<div class="input"><i>👤</i><input id="name" placeholder="مثال: محمد"></div>
 </div>
 
-<div class="app" id="appBox">
-<div class="sidebar">
-<div class="header"><b>هابون <span>Haboon</span></b><div class="icons"><span>📷</span><span>🔍</span><span onclick="logout()">⋮</span></div></div>
-<div style="padding:8px;background:#e8f5e9;text-align:center"><b id="myName"></b> <small id="myPhone"></small> <button onclick="logout()" style="border:none;background:#ff4444;color:#fff;padding:3px 10px;border-radius:10px;cursor:pointer">خروج</button></div>
-<div class="tabs"><div id="tabChats" class="active" onclick="showTab('chats')">المحادثات</div><div id="tabStatus" onclick="showTab('status')">الحالة</div><div id="tabCalls" onclick="showTab('calls')">المكالمات</div></div>
-<div class="search"><input placeholder="🔍 بحث في هابون"></div>
-<div class="list" id="list"></div>
+<div class="error" id="err">تأكد من البريد وكلمة السر</div>
+
+<button class="btn" onclick="loginEmail()">تسجيل الدخول ←</button>
+
+<div class="link">ليس لديك حساب؟ <b onclick="registerEmail()">إنشاء حساب جديد</b><br><br><small>بالدخول، فإنك توافق على شروط الاستخدام وسياسة الخصوصية</small></div>
 </div>
-<div class="main" id="mainChat">
-<div class="chat-head"><button class="back" onclick="closeChat()">←</button><div class="avatar" id="headAvatar">أ</div><div><b id="headName">اختر محادثة</b><br><small style="color:green">متصل الآن • آخر ظهور اليوم 10:30</small></div></div>
-<div class="messages" id="messages"><div style="text-align:center;background:#fdf3c6;padding:8px;border-radius:10px;font-size:13px">🔒 الرسائل مشفرة من طرف إلى طرف في هابون</div></div>
-<div class="input-area"><span style="font-size:22px">😊 📎</span><input id="msgInput" placeholder="اكتب رسالة هنا..."><button onclick="sendMsg()">➤</button></div>
-</div>
-</div>
+
+<div class="app" id="appBox"></div>
 
 <script>
-let saved=localStorage.getItem('haboon_user');
-if(saved){let u=JSON.parse(saved);showApp(u.name,u.phone);}
-function login(){
-let n=document.getElementById('userName').value.trim();
-let p=document.getElementById('userPhone').value.trim();
-let s=document.getElementById('userPass').value.trim();
-if(n.length<2||p.length<9||s.length<4){document.getElementById('errorMsg').style.display='block';return;}
-localStorage.setItem('haboon_user',JSON.stringify({name:n,phone:p}));showApp(n,p);
+function loginEmail(){
+ let e=document.getElementById('email').value.trim();
+ let p=document.getElementById('pass').value.trim();
+ if(!e.includes('@') || p.length<4){
+  document.getElementById('err').style.display='block';
+  document.getElementById('err').innerText='الرجاء كتابة بريد صحيح وكلمة سر 4 أحرف على الأقل';
+  return;
+ }
+ let n=document.getElementById('name').value.trim() || e.split('@')[0];
+ let users=JSON.parse(localStorage.getItem('haboon_users')||'{}');
+ // إذا المستخدم جديد، نسجله
+ if(!users[e]){users[e]={name:n,pass:p};localStorage.setItem('haboon_users',JSON.stringify(users));}
+ // تحقق كلمة السر
+ if(users[e].pass!==p){document.getElementById('err').style.display='block';document.getElementById('err').innerText='كلمة المرور غير صحيحة';return;}
+ localStorage.setItem('haboon_current',JSON.stringify({email:e,name:users[e].name}));
+ location.reload();
 }
-function showApp(n,p){document.getElementById('loginBox').style.display='none';document.getElementById('appBox').style.display='flex';document.getElementById('myName').innerText='👤 '+n;document.getElementById('myPhone').innerText=p;render('chats');}
-function logout(){localStorage.removeItem('haboon_user');location.reload();}
-let chats=[
-{name:"أحمد الحبوني",last:"أهلا، كيفك؟",letter:"أ",time:"10:30",unread:2},
-{name:"محمد",last:"تمام، متى نلتقي؟",letter:"م",time:"09:15",unread:0},
-{name:"سارة",last:"أرسلت لك الصور 📸",letter:"س",time:"أمس",unread:1},
-{name:"مجموعة العائلة",last:"علي: السلام عليكم",letter:"ع",time:"أمس",unread:5},
-{name:"هابون الرسمي",last:"مرحبا بك في هابون ✅",letter:"ه",time:"الثلاثاء",unread:0},
-];
-let status=[
-{name:"حالتي",last:"اضغط لإضافة حالة",letter:"+"},
-{name:"أحمد",last:"قبل 10 دقائق",letter:"أ"},
-{name:"سارة",last:"قبل 30 دقيقة",letter:"س"},
-{name:"محمد",last:"قبل ساعة",letter:"م"},
-];
-let calls=[
-{name:"أحمد الحبوني",last:"📞 مكالمة واردة • 10:30",letter:"أ"},
-{name:"سارة",last:"📹 مكالمة فيديو • أمس",letter:"س"},
-{name:"محمد",last:"↗ مكالمة صادرة • أمس",letter:"م"},
-];
-let current='chats';
-function showTab(t){current=t;document.querySelectorAll('.tabs div').forEach(e=>e.classList.remove('active'));document.getElementById('tab'+t.charAt(0).toUpperCase()+t.slice(1)).classList.add('active');render(t);}
-function render(t){
-let list=document.getElementById('list');list.innerHTML='';
-let data=t=='chats'?chats:t=='status'?status:calls;
-data.forEach((c,i)=>{
-let d=document.createElement('div');d.className='item';
-let avClass=t=='status'&&i>0?'avatar status':t=='calls'?'avatar call':'avatar';
-let unread=c.unread?`<span class="unread">${c.unread}</span>`:'';
-d.innerHTML=`<div class="${avClass}">${c.letter}</div><div class="info"><b><span>${c.name}</span><small>${c.time||c.last}</small></b><small>${c.last} ${unread}</small></div>`;
-d.onclick=()=>{if(t=='chats')openChat(i,d);if(t=='status')alert('حالة '+c.name+'\nفي هابون');if(t=='calls')alert('الاتصال بـ '+c.name+'\nفي هابون');};
-list.appendChild(d);
-});
+
+function registerEmail(){loginEmail();}
+
+let cur=JSON.parse(localStorage.getItem('haboon_current')||'null');
+if(cur){
+ document.getElementById('loginBox').style.display='none';
+ document.getElementById('appBox').style.display='block';
+ document.getElementById('appBox').innerHTML=`
+ <div style="padding:20px">
+ <div style="background:#075e54;color:#fff;padding:15px;border-radius:15px;display:flex;justify-content:space-between;align-items:center">
+ <b>هابون Haboon ✅</b><button onclick="logout()" style="background:#ff4444;color:#fff;border:none;padding:5px 12px;border-radius:10px">خروج</button>
+ </div>
+ <div style="background:#fff;padding:20px;border-radius:15px;margin-top:15px;text-align:center">
+ <div style="width:70px;height:70px;background:#0ecb81;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30px;margin:0 auto">${cur.name[0]}</div>
+ <h2 style="margin-top:10px">${cur.name}</h2><p>${cur.email}</p><p style="color:green;margin-top:10px">تم تسجيل الدخول بنجاح بالبريد 🎉</p>
+ <p style="color:#888;margin-top:15px">الآن أنت داخل هابون، يمكنك إضافة المنشورات والدردشة</p>
+ </div>
+ </div>`;
 }
-function openChat(i,el){
-document.querySelectorAll('.item').forEach(e=>e.classList.remove('active'));el.classList.add('active');
-document.getElementById('headName').innerText=chats[i].name;
-document.getElementById('headAvatar').innerText=chats[i].letter;
-document.getElementById('messages').innerHTML=`<div style="text-align:center;background:#fdf3c6;padding:8px;border-radius:10px;font-size:13px">🔒 الرسائل مشفرة من طرف إلى طرف في هابون</div><div class="msg other">أهلا، هذه محادثة ${chats[i].name} في هابون<small>10:30</small></div>`;
-document.getElementById('mainChat').classList.add('open');
-}
-function closeChat(){document.getElementById('mainChat').classList.remove('open')}
-function sendMsg(){
-let inp=document.getElementById('msgInput');if(!inp.value.trim())return;
-let m=document.createElement('div');m.className='msg me';m.innerHTML=inp.value+`<small>${new Date().toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'})} ✓✓</small>`;
-document.getElementById('messages').appendChild(m);inp.value='';
-setTimeout(()=>{let r=document.createElement('div');r.className='msg other';r.innerHTML='تم استلام رسالتك في هابون ✅<small>الآن</small>';document.getElementById('messages').appendChild(r);},800);
-}
-document.getElementById('msgInput').addEventListener('keydown',e=>{if(e.key==='Enter')sendMsg()});
+function logout(){localStorage.removeItem('haboon_current');location.reload();}
 </script>
 </body>
-                                                                                                                                                            </html>
-                                                                                                                                                      
+  </html>
